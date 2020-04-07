@@ -1,3 +1,4 @@
 # NewRepositiry
-My training repository
+My training repository.
+
 In this repository I will upload my old training programms 
