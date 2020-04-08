@@ -1,3 +1,2 @@
-# NewRepositiry
-My training repository.
-In this repository I will upload my old training programms 
+It's my training project. It was created on 24.12.2019. 
+
