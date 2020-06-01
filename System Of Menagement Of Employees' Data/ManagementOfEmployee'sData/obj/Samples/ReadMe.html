@@ -1,0 +1,526 @@
+<!doctype html public "-//w3c//dtd html 4.0 Transitional//en">
+<html>
+<head>
+  <title>Samples - dotConnect for SQLite</title>
+
+<style>
+body {
+  overflow: hidden;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background: #ffffff;
+  color: #000000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 70%;
+  width: 100%;
+  }
+p
+	{
+	margin: .5em 0em .5em 0em;
+	}
+ol, ul
+	{
+	margin-top: .5em;
+	}
+li
+	{
+	margin-bottom: .5em;
+	}
+ul p, ol p, dl p
+	{
+	margin-left: 0em;
+	}
+blockquote.dxOverload
+	{
+	margin: .5em 1.5em .5em 1.5em;
+	}
+h1, h2, h3, h4
+	{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	margin-bottom: .4em;
+	margin-top: 1em;
+	font-weight: bold;
+	}
+h1
+	{
+	font-size: 120%;
+	margin-top: 0em;
+	}
+h2
+	{
+	font-size: 130%;
+	}
+h3
+	{
+	font-size: 115%;
+	}
+h4
+	{
+	font-size: 100%;
+	}
+.dxH1, .dxH2, .dxH3, .dxH4
+	{
+	margin-left: -18px;
+	}
+A
+  {
+  color: #0000FF;
+  }
+A:link
+  {
+  color: #0000FF;
+  }
+A:active
+  {
+  color: #000080;
+  }
+A:visited
+  {
+  color: #800080;
+  }
+A:hover
+  {
+  color: #FF0000;
+  }
+pre
+  {
+  font-family: Courier New;
+  font-size: 9pt;
+  color: #000060;
+  margin-top: 0px;
+  }
+code, p.example, p.sourcecode, table.sourcecode, tr.sourcecode, td.sourcecode
+  {
+  font-family: Courier New;
+  font-size: 9pt;
+  color: #000060;
+  }
+div#pagetop {
+  margin: 0px;
+  padding: 0px;
+  background-color: #99ccff;
+  height: 44;
+  width: 100%;
+  border-bottom: 1px solid #999999;
+  }
+div#pagebody {
+  margin: 0px 0px 0px 0px;
+  padding: 5px 10px 0px 22px;
+  height: 90%;
+  width: 100%;
+  overflow: auto;
+  background-color: #FFFFFF;
+  vertical-align: top;
+  }
+table#BannerTable
+  {
+  width: 100%;
+  height: 100%;
+  border-collapse:collapse;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  }
+table#BannerTable td
+  {
+  padding-left: 8px;
+  padding-right: 8px;
+  }
+tr#BannerTopRow
+  {
+  font-style: italic;
+  font-size: 70%;
+  }
+tr#Banner2ndRow
+  {
+  font-weight: bold;
+  font-size: 80%;
+  }
+table.filtereditemlisttable, table.xmldoctable
+	{
+	width: 95%;
+	margin-top: .6em;
+	margin-bottom: .3em;
+	border-width: 1px 1px 0px 0px;
+	border-style: solid;
+	border-color: #999999;
+	background-color: #999999;
+	font-size: 100%;
+  border-collapse:collapse;
+	}
+table.filtereditemlisttable th, table.filtereditemlisttable td, table.xmldoctable th, table.xmldoctable td
+	{
+	border-width: 0px 0px 1px 1px;
+	border-style: solid;
+	border-color: #999999;
+	padding: 4px 6px;
+	text-align: left;
+	vertical-align: top;
+	}
+table.filtereditemlisttable th, table.xmldoctable th
+	{
+	background: #cccccc;
+	vertical-align: bottom;
+	}
+table.filtereditemlisttable td, table.xmldoctable td
+	{
+	background-color: #ffffff;
+	vertical-align: top;
+	}
+</style>
+
+<script>
+
+var Engine;
+var enOpera = 'Opera';
+var enIE = 'IE';
+var enGecko = 'Gecko';
+
+function TestEngine()
+{
+  if (document.all) {
+    if (window.opera) {
+      Engine = enOpera;
+    }
+    else {
+      Engine = enIE;
+    }
+  }
+  else {
+    Engine = enGecko;
+  }
+}
+
+function RunningInCHM()
+{
+  var wstr = document.location.href.substr(0,14);
+  return (wstr == 'mk:@MSITStore:');
+}
+
+
+function RunningInHxS()
+{
+  var wstr = document.location.href.substr(0,10);
+  return (wstr == 'ms-help://');
+}
+
+
+function RunningInHost()
+{
+  return RunningInCHM() || RunningInHxS();
+}
+
+function HostOrNot(ifhost, ifnothost)
+{
+  if (RunningInHost()) {
+    document.write(ifhost);
+  } else {
+    document.write(ifnothost);
+  }
+}//HostOrNot
+
+function AdjustContentSize()
+{
+  var cDiv = document.getElementById("pagebody");
+  if ((Engine == enGecko)||(Engine == enOpera))//amend padding
+    {
+      var w = document.body.clientWidth;
+      cDiv.style.width = w - 32;
+    }
+  var h = document.body.clientHeight;
+  var diff = 44;
+  if ((Engine == enGecko)||(Engine == enOpera)) diff = diff + 6;
+  cDiv.style.height = h - diff;
+}
+
+
+function Startup()
+{
+  //add startup code here
+}
+</script>
+
+</head>
+
+
+<body onresize="AdjustContentSize()" onload="Startup()">
+
+<div id="pagetop">
+  <table id="BannerTable">
+    <tr id="BannerTopRow">
+      <td>dotConnect for SQLite</td>
+      <td align="right">support@devart.com</td>
+</tr>
+    <tr id="Banner2ndRow">
+      <td>Samples</td>
+      <td>&nbsp;</td>
+
+</tr>
+  </table>
+</div>
+
+<div id="pagebody">
+<!-- begin content -->
+
+<p>
+dotConnect for SQLite samples are divided into 4 categories: General demos, Web demos, Web Service sample, and CRM demo project.
+You can open all of them from the Start menu group. General samples demonstrate usage of individual
+data access features, Web samples show how to use dotConnect for SQLite in ASP.NET environment, and the CRM
+demo shows some good design and implementation practices that you can employ with dotConnect for SQLite.
+</p>
+
+<p>
+Note: in the Standard edition of dotConnect for SQLite some samples are not available.
+</p>
+
+<h4 class="dxH4">General Samples</h4>
+
+<p>
+Use the Start menu group to open General samples in the language you prefer. You can also run the
+compiled binary, which incorporates all General samples and provides quick access to C# source,
+necessary SQL scripts, and run-time state.
+</p>
+
+<table class="xmldoctable" cellspacing="0">
+
+<tr>
+  <th width=15%>Sample</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+<td><b>Crystal</b></td>
+<td>This sample project demonstrates using dotConnect for SQLite for generating reports with Crystal Reports.</td>
+</tr>
+
+<tr>
+<td><b>DataReader</b></td>
+<td>This sample project demonstrates using SQLiteDataReader class to obtain data from a query. The sample executes SQL statement at the SQLiteCommand and gets SQLiteDataReader to retrieve data.</td>
+</tr>
+
+<tr>
+<td><b>DataSet</b></td>
+<td>This sample project demonstrates using untyped dataset with dotConnect for SQLite to review and update data. The sample uses a SQLiteDataAdapter component to fill a dataset and post updated data to a SQLite database. The SQLiteDataAdapter component uses the SQLiteCommandBuilder class to automatically generate SQL for INSERT/UPDATE/DELETE operations.</td>
+</tr>
+
+<tr>
+<td><b>DbDataTable</b></td>
+<td>This sample project demonstrates data mapping from SQLite tables and paginal access. The sample uses a SQLiteDataTable component to access data from a table and display this data in a DataGrid control.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+<td><b>MasterDetail</b></td>
+<td>This sample project demonstrates setting master-detail relation at an untyped dataset. The sample fills two tables at the dataset using the SQLiteDataAdapter component and sets master-detail relation between them.</td>
+</tr>
+
+<tr>
+<td><b>MetaData</b></td>
+<td>This sample project shows how to retrieve information about databases, tables,
+columns, and so on. The only method used for these tasks is <b>GetSchema</b>.</td>
+</tr>
+
+<tr>
+<td><b>Pictures</b></td>
+<td>This sample project demonstrates using dotConnect for SQLite for working with BLOB objects as graphics. The sample shows how to retrieve binary data from a SQLite database and display it at the monitor, load and save pictures into the file and the database.</td>
+</tr>
+
+<tr>
+<td><b>Table</b></td>
+<td>This sample project demonstrates data mapping from SQLite tables. The sample sets CommandType property of SQLiteCommand to TableDirect to access data from the table.</td>
+</tr>
+
+<tr>
+<td><b>Transactions</b></td>
+<td>This sample project demonstrates working with SQLite transactions. The sample demonstrates how to get a SQLiteTransaction object from a SQLiteConnection object, how to commit or rollback a transaction.</td>
+</tr>
+
+<tr>
+<td><b>Dump</b></td>
+<td>This sample project demonstrates how to backup data from database to file and then restore it. It uses the SQLiteDump component to accomplish the task.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+  <td><b>Loader</b></td>
+  <td>This sample project demonstrates working with the SQLiteLoader component. SQLiteLoader's work is based on generation of INSERT statements that insert data by several rows for one time.
+ <br><b>Note:</b> this sample is available only in Professional Edition. </td>
+</tr>
+
+</table>
+
+<p>
+<b>Note:</b> Before running sample projects from an IDE you need to execute commands from
+<script>
+HostOrNot('<i>tables.sql</i> file','<a href="tables.sql" target="_blank">tables.sql</a>');
+</script>
+<noscript><a href="tables.sql" target="_blank">tables.sql</a></noscript>
+to create test data.
+</p>
+
+<h4 class="dxH4">Web Samples</h4>
+
+<p>
+Use the Start menu group to open Web samples in the language you prefer.
+</p>
+
+<table class="xmldoctable" cellspacing="0">
+
+<tr>
+  <th width=15%>Sample</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+  <td><b>AjaxDemo</b></td>
+  <td>This sample demonstrates data binding and editing in an asynchronous way.
+The sample uses SqlDataSource component in conjuction with ASP.NET AJAX Update Panel.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+ <tr>
+  <td><b>CRM</b></td>
+  <td>This sample demonstrates how SqlDatasource can be used in the complex software product such as CRM (Customer Relationship Management).<br>
+The sample illustrates how to perform data retrieving and editing in the complex scenario using SqlDataSource.<br><b>Note:</b> this sample is available only in Professional Edition.
+</td>
+</tr>
+
+<tr>
+  <td><b>DataSource</b></td>
+  <td>This sample shows how to use the SQLiteDataSource component of dotConnect for SQLite. The sample illustrates using of manual paging, auto paging and master-detail techniques with SqlDataSource component.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+  <td><b>DataSource_devExpress</b></td>
+  <td>This sample demonstrates using SqlDataSource with DevExpress ASPxGridView component. The ASPxGridView component uses SqlDataSource to perform asynchronous data retrieving and paging.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+  <td><b>LoadOnDemand</b></td>
+  <td>This sample demonstrates the load-data-on-demand technique with the dotConnect for SQL Server components.<br>
+The sample shows how to use SqlDataSource and ObjectDataSource to retrieve data from DB asynchronously and only on user demand.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+  <td><b>LoadOnDemand_Telerik</b></td>
+  <td>This sample demonstrates load-data-on-demand technique with SqlDataSource component in conjuction with Telerik RadGrid control.<br><b>Note:</b> this sample is available only in Professional Edition.</td>
+</tr>
+
+<tr>
+  <td><b>Web</b></td>
+  <td>A sample on simple usage of dotConnect for SQLite in an ASP.NET application.</td>
+</tr>
+
+<tr>
+  <td><b>WebProviders</b></td>
+  <td>This sample shows how to use dotConnect for SQLite with ASP.NET 2.0 Providers Model.<p>The first part of the WebProviders sample illustrates usage of WebParts, SiteMap, WebEvent, and SessionState Providers, and the second - of Membership, Roles, and Profile Providers.
+<br><b>Note:</b> this sample is available only in Professional Edition.</p></td>
+</tr>
+
+</table>
+
+<h4 class="dxH4">Entity Framework Samples</h4>
+
+<p>
+Use the Start menu group to open Entity framework samples in the language you prefer. To run the samples you should have VisualStudio 2008 ServicePack 1 and .NET Framework 3.5 ServicePack 1 installed.
+</p>
+<p>
+<b>Note:</b> these samples are available only in Professional Edition.
+</p>
+
+<table class="xmldoctable" cellspacing="0">
+
+<tr>
+  <th width=15%>Sample</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+  <td><b>SaveChanges</b></td>
+  <td>This sample shows data binding, the possibility of editing table entities collection in DataGridView, and saving the changes to database.</td>
+</tr>
+
+<tr>
+  <td><b>MasterDetail</b></td>
+  <td>This sample shows how to setup master/detail relationship with the possibility of editing and saving bound entities.</td>
+</tr>
+
+<tr>
+  <td><b>LinqQueries</b></td>
+  <td>This sample shows the ways of executing LINQ to Entities queries.</td>
+</tr>
+
+</table>
+
+<p>
+<b>Note:</b> Before running sample projects from an IDE you need to execute commands from
+<script>
+HostOrNot('<i>tables.sql</i> file','<a href="crm_demo.sql" target="_blank">crm_demo.sql</a>');
+</script>
+<noscript><a href="crm_demo.sql" target="_blank">crm_demo.sql</a></noscript>
+to create test data.
+</p>
+
+<h4 class="dxH4">Web Service</h4>
+
+<!-- <p>
+This sample illustrates creating a web service with dotConnect for SQLite.
+</p>
+ -->
+ <table class="xmldoctable" cellspacing="0">
+<tr>
+  <th width=15%>Sample</th>
+  <th>Description</th>
+</tr>
+
+
+<tr>
+  <td><b>Server</b></td>
+  <td>This sample illustrates creating a web service with dotConnect for SQLite.
+In the provided web method dotConnect for SQLite classes are used to fill DataSet and return it to a client.</td>
+</tr>
+
+<tr>
+  <td><b>WebClient</b></td>
+  <td>This sample demonstrates using of the web service by the web client.
+The data recieved from web service is shown in GridView control.</td>
+</tr>
+
+<tr>
+  <td><b>WinClient</b></td>
+  <td>This sample demonstrates using of the web service by the WinForms client.
+The data recieved from web service is shown in the DataGridView control.</td>
+</tr>
+
+</table>
+<h4 class="dxH4">CRM Demo</h4>
+
+<p>
+CRM (Customer Relationship Management) is a complex software product that requires good
+architecture and good tools. This sample shows that dotConnect for SQLite is the right data
+access solution for designing and building applications of the kind. To see how it works
+launch the compiled binary from the start menu. It is required that you create a test
+database for this demo on the first launch.
+</p>
+
+<p>
+By examining the source code of CRM demo you can see how the advanced features of dotConnect for SQLite
+help you build a centralized data access and storage solution. Particularly, it solves common problems like
+implementing flexible data binding,
+passing instances of data access components,
+controlling database connections,
+and so on.
+For more information on best practices in the area of data access please refer to the <i>General Concepts in
+Database Application Development</i> section of dotConnect for SQLite documentation.
+</p>
+<p>
+<b>Note:</b> this demo is available only for Professional Edition.
+</p>
+<!-- end content -->
+
+<p>&nbsp;</p><p>&nbsp;</p><hr size=1>
+<p>&copy; 2002-2020 Devart. All rights reserved.</p>
+
+</div>
+
+<script>
+TestEngine();
+AdjustContentSize();
+</script>
+</body>
+</html>
